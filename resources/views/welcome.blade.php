@@ -92,6 +92,12 @@ tailwind.config = {
           <p class="text-2xl font-semibold text-diskon">Rp {{ number_format($product->harga_diskon, 0, ',', '.')}}</p>
         </div>
         <button class="mt-6 bg-brand hover:bg-brand-dark text-white font-medium py-3 w-full transition-colors">Beli</button>
+
+        <form action="/produk/{{ $product->id }}" method="POST" onsubmit="return confirm('Hapus produk ini?')">
+          @csrf
+          @method('DELETE')
+          <button type="submit" class="mt-2 w-full border border-gray-400 text-gray-700 hover:bg-gray-100 font-medium py-3 transition-colors">Hapus</button>
+        </form>
       </div>
     </article>
     @endforeach
@@ -200,7 +206,7 @@ tailwind.config = {
     var b = document.getElementById('badge');
     b.textContent = count; b.classList.toggle('hidden', count === 0);
   }
-  document.querySelectorAll('#grid button').forEach(function (btn) {
+  document.querySelectorAll('#grid .btn-beli').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var card = btn.closest('article');
       var nama = card.querySelector('h3').textContent;

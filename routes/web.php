@@ -28,6 +28,11 @@ Route::post('/produk', function (Request $request) {
     return redirect('/')->with('success', 'Produk berhasil ditambahkan!');
 });
 
+Route::delete('/produk/{id}', function ($id) {
+    DB::table('products')->where('id', $id)->delete();
+    return redirect('/')->with('success', 'Produk berhasil dihapus!');
+});
+
 // Health check
 Route::get('/health', function () {
     try {
