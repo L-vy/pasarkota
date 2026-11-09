@@ -91,7 +91,7 @@ tailwind.config = {
           <p class="text-sm text-gray-500 line-through">Rp {{ number_format($product->harga_asli, 0, ',', '.')}}</p>
           <p class="text-2xl font-semibold text-diskon">Rp {{ number_format($product->harga_diskon, 0, ',', '.')}}</p>
         </div>
-        <button class="mt-6 bg-brand hover:bg-brand-dark text-white font-medium py-3 w-full transition-colors">Beli</button>
+        <button type="button" class="btn-beli mt-6 bg-brand hover:bg-brand-dark text-white font-medium py-3 w-full transition-colors">Beli</button>
 
         <form action="/produk/{{ $product->id }}" method="POST" onsubmit="return confirm('Hapus produk ini?')">
           @csrf
