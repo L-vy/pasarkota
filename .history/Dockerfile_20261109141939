@@ -1,0 +1,22 @@
+# Stage 1: Build dependency
+FROM composer:2.6 as builder
+WORKDIR /app
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --no-scripts --prefer-dist --ignore-platform-reqs
+COPY . .
+
+# Stage 2: Runtime
+FROM php:8.2-fpm-alpine
+WORKDIR /var/www/html
+
+# Install ekstensi pdo_mysql untuk koneksi ke database MySQL
+RUN docker-php-ext-install pdo_mysql
+
+# Salin dari builder
+COPY --from=builder /app /var/www/html
+
+# Set hak akses
+RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
+
+EXPOSE 8000
+CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]
