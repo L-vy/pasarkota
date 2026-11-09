@@ -1,0 +1,46 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    networks:
+      - pasarkota_network
+
+  db:
+    image: mysql:8.0
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - pasarkota_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      timeout: 10s
+      retries: 5
+  
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+    networks:
+      - pasarkota_network
+    profiles:
+      - tools
+    depends_on:
+      - db
+
+networks:
+  pasarkota_network:
+    driver: bridge
+
+volumes:
+  db_data:
