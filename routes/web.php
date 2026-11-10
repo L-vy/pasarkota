@@ -37,8 +37,8 @@ Route::delete('/produk/{id}', function ($id) {
 Route::get('/health', function () {
     try {
         DB::connection()->getPdo();
-        return response()->json(['status' => 'healthy', 'database' => 'up']);
+        return response()->json(['status' => 'healthy', 'database' => 'connected'], 200);
     } catch (\Throwable $e) {
-        return response()->json(['status' => 'unhealthy', 'database' => 'down'], 503);
+        return response()->json(['status' => 'unhealthy'], 503);
     }
 });
